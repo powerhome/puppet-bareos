@@ -36,15 +36,8 @@
 #   Bareos Default: /usr/lib/bareos/backends
 #   Required: false
 #
-# [*deamon_args*]
-#   Any additional arguments to pass to the daemon at runtime
-#
-#   Bareos Datatype: string
-#   Bareos Default: Not set
-#   Required: false
-#
-# [*default_config]
-#   The location on the system for bareos-dir /etc/default config
+# [*config_dir*]
+#   Where bareos-dir.conf should live
 #
 #   Bareos Datatype: string
 #   Bareos Default: Not set
@@ -366,8 +359,7 @@ class bareos::director::director (
   $audit_events = undef,
   $auditing = undef,
   $backend_directory = undef,
-  $daemon_args = undef,
-  $default_config = '/etc/default/bareos-dir',
+  $config_file = "${::bareos::director::config_dir}/bareos-dir.conf",
   $description = undef,
   $dir_address = undef,
   $dir_addresses = undef,
@@ -483,28 +475,14 @@ class bareos::director::director (
     $_require_resource = undef
   }
 
-  file { $default_config:
-    ensure  => $ensure,
-    mode    => '0644',
-    owner   => $::bareos::file_owner,
-    group   => $::bareos::file_group,
-    content => template('bareos/bareos_dir_default.erb'),
-    notify  => Service[$::bareos::directory::service_name],
-    require => $_require_resource,
-    tag     => ['bareos', 'bareos_director', 'bareos_defaults']
-  }
-
-  file { "${::bareos::director::config_dir}/${_resource_dir}/bareos-dir.conf":
+  file { $config_file:
     ensure  => $ensure,
     mode    => $::bareos::file_mode,
     owner   => $::bareos::file_owner,
     group   => $::bareos::file_group,
     content => template('bareos/resource.erb'),
     notify  => Service[$::bareos::director::service_name],
-    require => [
-      $_require_resource,
-      File[$default_config],
-    ],
+    require => $_require_resource,
     tag     => ['bareos', 'bareos_director'],
   }
 }
