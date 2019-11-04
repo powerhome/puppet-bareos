@@ -13,6 +13,7 @@ class bareos::params {
   # base
   $manage_repo = true
   $manage_user = true
+  $manage_config_dir = true
   # base/common package
   $package_name = 'bareos-common'
 
