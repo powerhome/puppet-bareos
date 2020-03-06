@@ -338,7 +338,7 @@ define bareos::director::storage (
     $_require_resource = undef
   }
 
-  if $ndmp_client {
+  if $ndmp_storage {
 
     file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
       ensure  => $ensure,
