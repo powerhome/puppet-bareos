@@ -105,7 +105,7 @@ module Puppet::Parser::Functions
           end
 
           unless value_in_array.nil?
-            raise "Value '#{value}' needs to be one of #{value_in_array.inspect}" unless value_in_array.include? value.to_s.downcase
+            raise "Value '#{value}' needs to be one of #{value_in_array.inspect}" unless value_in_array.include? value.to_s
           end
           unless regex.nil?
             raise "Value '#{value}' does not match regex #{regex}" unless value =~ Regexp.compile(regex)
