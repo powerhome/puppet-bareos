@@ -85,7 +85,7 @@ module Puppet::Parser::Functions
           when 'auth_type'
             value_in_array = %w[clear md5]
           when 'auth_protocol_type', 'protocol_type'
-            value_in_array = %w[native ndmp NDMPv4 NDMP NDMP_BAREOS]
+            value_in_array = %w[native ndmp ndmpv4 ndmp_bareos]
           when 'pooltype'
             value_in_array = %w[backup archive cloned migration copy save scratch]
           when 'label'
@@ -105,7 +105,7 @@ module Puppet::Parser::Functions
           end
 
           unless value_in_array.nil?
-            raise "Value '#{value}' needs to be one of #{value_in_array.inspect}" unless value_in_array.include? value.to_s
+            raise "Value '#{value}' needs to be one of #{value_in_array.inspect}" unless value_in_array.include? value.to_s.downcase
           end
           unless regex.nil?
             raise "Value '#{value}' does not match regex #{regex}" unless value =~ Regexp.compile(regex)
