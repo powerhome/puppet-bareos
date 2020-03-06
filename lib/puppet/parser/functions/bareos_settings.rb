@@ -85,7 +85,7 @@ module Puppet::Parser::Functions
           when 'auth_type'
             value_in_array = %w[clear md5]
           when 'auth_protocol_type', 'protocol_type'
-            value_in_array = %w[native ndmp ndmpv4 ndmp_bareos]
+            value_in_array = %w[native ndmp ndmpv4 ndmp_bareos ndmp_native]
           when 'pooltype'
             value_in_array = %w[backup archive cloned migration copy save scratch]
           when 'label'
