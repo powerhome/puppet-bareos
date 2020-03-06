@@ -1,0 +1,12 @@
+Storage {
+  Name = "<%= $storage_name %>"
+  Address = "<%= $storage_address %>"
+  Port = "<%= $storage_port %>"
+  Protocol = NDMPv4
+  Auth Type = "<%= $storage_auth_type %>"
+  Username = "<%= $storage_username %>"
+  Password = "<%= $storage_password %>"
+  Device = "<%= $storage_device %>"
+  Media Type = "<%= $storage_media_type %>"
+  PairedStorage = "<%= $storage_paired_storage %>"
+}

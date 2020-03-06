@@ -239,6 +239,12 @@
 #   Bareos Default: Not set
 #   Required: false
 #
+# [*ndmp_storage*]
+#   NDMP_Storage
+#
+#   This parameter determines if we should use the `ndmp_storage_resource`
+#   template to preserve parameter ordering
+#
 define bareos::director::storage (
   $ensure = present,
   $address = undef,
@@ -274,6 +280,7 @@ define bareos::director::storage (
   $tls_require = undef,
   $tls_verify_peer = undef,
   $username = undef,
+  $ndmp_client = false,
 ) {
   include ::bareos::director
 
@@ -331,14 +338,40 @@ define bareos::director::storage (
     $_require_resource = undef
   }
 
-  file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
-    ensure  => $ensure,
-    mode    => $bareos::file_mode,
-    owner   => $bareos::file_owner,
-    group   => $bareos::file_group,
-    content => template('bareos/resource.erb'),
-    notify  => Service[$bareos::director::service_name],
-    require => $_require_resource,
-    tag     => ['bareos', 'bareos_director'],
+  if $ndmp_client {
+
+    file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
+      ensure  => $ensure,
+      mode    => $bareos::file_mode,
+      owner   => $bareos::file_owner,
+      group   => $bareos::file_group,
+      content => epp('bareos/ndmp_storage_resource.epp', {
+        storage_name           => $name,
+        storage_address        => $address,
+        storage_port           => $port,
+        storage_auth_type      => $auth_type,
+        storage_username       => $username,
+        storage_password       => $password,
+        storage_media_type     => $media_type,
+        storage_device         => $device,
+        storage_paired_storage => $paired_storage,
+      }),
+      notify  => Service[$bareos::director::service_name],
+      require => $_require_resource,
+      tag     => ['bareos', 'bareos_director'],
+    }
+
+  } else {
+
+    file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
+      ensure  => $ensure,
+      mode    => $bareos::file_mode,
+      owner   => $bareos::file_owner,
+      group   => $bareos::file_group,
+      content => template('bareos/resource.erb'),
+      notify  => Service[$bareos::director::service_name],
+      require => $_require_resource,
+      tag     => ['bareos', 'bareos_director'],
+    }
   }
 }
