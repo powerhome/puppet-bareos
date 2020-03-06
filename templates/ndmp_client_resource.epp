@@ -1,0 +1,9 @@
+Client {
+  Name = "<%= $client_name %>"
+  Address = "<%= $client_address %>"
+  Port = "<%= $client_port %>"
+  Protocol = NDMPv4
+  Auth Type = "<%= $client_auth_type %>"
+  Username = "<%= $client_username %>"
+  Password = "<%= $client_password %>"
+}

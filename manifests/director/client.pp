@@ -274,6 +274,12 @@
 #   Bareos Default: Not set
 #   Required: false
 #
+# [*ndmp_client*]
+#   NDMP_Client
+#
+#   This parameter determines if we should use the `ndmp_client_resource`
+#   template to preserve parameter ordering
+#
 define bareos::director::client (
   $ensure = present,
   $address = undef,
@@ -314,6 +320,7 @@ define bareos::director::client (
   $tls_require = undef,
   $tls_verify_peer = undef,
   $username = undef,
+  $ndmp_client = false,
 ) {
   include ::bareos::director
 
@@ -376,14 +383,38 @@ define bareos::director::client (
     $_require_resource = undef
   }
 
-  file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
-    ensure  => $ensure,
-    mode    => $bareos::file_mode,
-    owner   => $bareos::file_owner,
-    group   => $bareos::file_group,
-    content => template('bareos/resource.erb'),
-    notify  => Service[$bareos::director::service_name],
-    require => $_require_resource,
-    tag     => ['bareos', 'bareos_director'],
+  if $ndmp_client {
+
+    file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
+      ensure  => $ensure,
+      mode    => $bareos::file_mode,
+      owner   => $bareos::file_owner,
+      group   => $bareos::file_group,
+      content => epp('bareos/ndmp_client_resource.epp', {
+        client_name      => $name,
+        client_address   => $address,
+        client_port      => $port,
+        client_protocol  => $protocol,
+        client_auth_type => $auth_type,
+        client_username  => $username,
+        client_password  => $password,
+      }),
+      notify  => Service[$bareos::director::service_name],
+      require => $_require_resource,
+      tag     => ['bareos', 'bareos_director'],
+    }
+
+  } else {
+
+    file { "${::bareos::director::config_dir}/${_resource_dir}/${name}.conf":
+      ensure  => $ensure,
+      mode    => $bareos::file_mode,
+      owner   => $bareos::file_owner,
+      group   => $bareos::file_group,
+      content => template('bareos/resource.erb'),
+      notify  => Service[$bareos::director::service_name],
+      require => $_require_resource,
+      tag     => ['bareos', 'bareos_director'],
+    }
   }
 }
