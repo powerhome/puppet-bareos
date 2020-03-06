@@ -280,7 +280,7 @@ define bareos::director::storage (
   $tls_require = undef,
   $tls_verify_peer = undef,
   $username = undef,
-  $ndmp_client = false,
+  $ndmp_storage = false,
 ) {
   include ::bareos::director
 
