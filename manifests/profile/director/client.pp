@@ -1,6 +1,8 @@
 # == Class: bareos::profile::director::client
 # Default client, backup bareos director itself
-class bareos::profile::director::client {
+class bareos::profile::director::client(
+    $backup_fd_storage = 'File',
+) {
   $password = fqdn_rand_string(20,'','bareos-fd-password')
 
   # setup filedaemon
@@ -19,5 +21,6 @@ class bareos::profile::director::client {
     job_defs => 'BackupBareosCatalog',
     client   => 'bareos-director-fd',
     messages => 'Standard',
+    storage  => $backup_fd_storage,
   }
 }
