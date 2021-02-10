@@ -32,7 +32,6 @@ class bareos (
   $client_service_name   = $::bareos::params::client_service_name,
   $storage_package_name  = $::bareos::params::storage_package_name,
   $storage_service_name  = $::bareos::params::storage_service_name,
-  $python_package_type   = $::bareos::params::python_package_type,
 ) inherits ::bareos::params {
 
   if $manage_repo {

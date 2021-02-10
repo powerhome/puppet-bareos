@@ -1,6 +1,8 @@
 # == Class: bareos::params
 #
-class bareos::params {
+class bareos::params(
+  $python_package_type = 'python',
+) {
   $file_mode = '0660'
   $file_dir_mode = '0755'
   $file_owner = 'bareos'
@@ -23,9 +25,6 @@ class bareos::params {
   $package_ensure = present
   $service_ensure = running
   $service_enable = true
-
-  # which python version of packages to use (python/python3)
-  $python_package_type = 'python'
 
   # service/package specific
   # bconsole
