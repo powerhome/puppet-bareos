@@ -24,6 +24,9 @@ class bareos::params {
   $service_ensure = running
   $service_enable = true
 
+  # which python version of packages to use (python/python3)
+  $python_package_type = 'python'
+
   # service/package specific
   # bconsole
   $console_package_name = 'bareos-bconsole'
@@ -34,7 +37,7 @@ class bareos::params {
   # director
   $director_package_name = [
     'bareos-director',
-    'bareos-director-python3-plugin',
+    "bareos-director-${python_package_type}-plugin",
     'bareos-database-common',
     'bareos-database-mysql',
     'bareos-database-postgresql',
@@ -58,11 +61,11 @@ class bareos::params {
                           ]
 
   # filedaemon/client
-  $client_package_name = ['bareos-filedaemon', 'bareos-filedaemon-python3-plugin']
+  $client_package_name = ['bareos-filedaemon', "bareos-filedaemon-${python_package_type}-plugin"]
   $client_service_name = 'bareos-fd'
 
   # storage
-  $storage_package_name = ['bareos-storage', 'bareos-storage-python3-plugin', 'bareos-tools']
+  $storage_package_name = ['bareos-storage', "bareos-storage-${python_package_type}-plugin", 'bareos-tools']
   $storage_service_name = 'bareos-sd'
 
   # webui
