@@ -1,7 +1,7 @@
 # == Class: bareos::params
 #
 class bareos::params(
-  $python_package_type = 'python',
+  $python_package_type,
 ) {
   $file_mode = '0660'
   $file_dir_mode = '0755'
